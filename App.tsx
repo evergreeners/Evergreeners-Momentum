@@ -17,7 +17,8 @@ import {
   Menu,
   X,
   Search,
-  Bell
+  Bell,
+  AlertCircle
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -78,13 +79,13 @@ const App: React.FC = () => {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+      <div className="h-screen bg-zinc-950 flex items-center justify-center p-4 overflow-hidden">
         <div className="w-full max-w-md space-y-8 bg-zinc-900/50 p-8 rounded-2xl border border-zinc-800 backdrop-blur-sm">
           <div className="text-center space-y-2">
             <div className="mx-auto w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4">
               <Zap className="text-white w-10 h-10" />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white">GitMomentum</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-white">Evergreeners Momentum</h1>
             <p className="text-zinc-400">Connect your GitHub to boost repo health</p>
           </div>
 
@@ -98,9 +99,21 @@ const App: React.FC = () => {
                 className="w-full bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                 placeholder="ghp_xxxxxxxxxxxx"
               />
-              <p className="mt-2 text-xs text-zinc-500">
-                Generate a token with <code className="bg-zinc-800 px-1 rounded text-zinc-300">repo</code> scopes to manage your projects.
-              </p>
+              <div className="mt-4 p-4 bg-indigo-500/5 border border-indigo-500/10 rounded-xl space-y-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-wider">
+                  <AlertCircle className="w-3 h-3" /> Required Permissions
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[10px] text-zinc-500 font-bold mb-1">FOR CLASSIC TOKENS:</p>
+                    <p className="text-xs text-zinc-400">Select the <code className="bg-zinc-800 px-1 rounded text-zinc-300">repo</code> scope checkbox.</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-zinc-500 font-bold mb-1">FOR FINE-GRAINED TOKENS:</p>
+                    <p className="text-xs text-zinc-400">Grant <span className="text-zinc-300 font-medium italic">Read & Write</span> access to <span className="text-zinc-300">Contents</span> and <span className="text-zinc-300">Pull Requests</span>.</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <button
               type="submit"
@@ -120,23 +133,23 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex text-zinc-200">
+    <div className="h-screen w-full bg-zinc-950 flex text-zinc-200 overflow-hidden">
       {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-zinc-900 border-r border-zinc-800 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
+      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 shrink-0 bg-zinc-900 border-r border-zinc-800 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out h-full`}>
         <div className="h-full flex flex-col">
-          <div className="p-6 flex items-center justify-between">
+          <div className="p-6 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                 <Zap className="text-white w-5 h-5" />
               </div>
-              <span className="font-bold text-xl tracking-tight text-white">GitMomentum</span>
+              <span className="font-bold text-lg leading-tight tracking-tight text-white">Evergreeners<br/>Momentum</span>
             </div>
             <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-zinc-500 hover:text-white">
               <X className="w-6 h-6" />
             </button>
           </div>
 
-          <nav className="flex-1 px-4 py-4 space-y-1">
+          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
             <NavItem 
               icon={<LayoutDashboard className="w-5 h-5" />} 
               label="Dashboard" 
@@ -163,7 +176,7 @@ const App: React.FC = () => {
             />
           </nav>
 
-          <div className="p-4 border-t border-zinc-800 mt-auto">
+          <div className="p-4 border-t border-zinc-800 mt-auto shrink-0 bg-zinc-900">
             <div className="flex items-center gap-3 p-3 bg-zinc-800/50 rounded-xl mb-4">
               <img src={user?.avatar_url} className="w-10 h-10 rounded-full border border-zinc-700" alt="Avatar" />
               <div className="flex-1 min-w-0">
@@ -183,13 +196,13 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-w-0 overflow-auto">
-        <header className="sticky top-0 z-30 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 h-16 flex items-center justify-between px-6">
+      <main className="flex-1 min-w-0 h-full overflow-y-auto flex flex-col relative custom-scrollbar">
+        <header className="sticky top-0 z-30 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 h-16 flex items-center justify-between px-6 shrink-0">
           <div className="flex items-center gap-4">
             <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden text-zinc-400 hover:text-white">
               <Menu className="w-6 h-6" />
             </button>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-white truncate max-w-[200px] sm:max-w-none">
               {selectedRepo ? selectedRepo.name : currentView.charAt(0).toUpperCase() + currentView.slice(1)}
             </h2>
           </div>
@@ -200,7 +213,7 @@ const App: React.FC = () => {
               <input 
                 type="text" 
                 placeholder="Search repositories..." 
-                className="bg-transparent border-none text-sm ml-2 focus:ring-0 w-full"
+                className="bg-transparent border-none text-sm ml-2 focus:ring-0 w-full text-zinc-200 placeholder-zinc-500"
               />
             </div>
             <button className="relative p-2 text-zinc-400 hover:text-white transition-colors">
@@ -210,9 +223,10 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="p-6 max-w-7xl mx-auto w-full flex-1">
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 shrink-0" />
               {error}
             </div>
           )}

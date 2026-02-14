@@ -118,4 +118,36 @@ export class GeminiService {
 
     return response.text || '';
   }
+
+  static async generateContextualMarkdown(
+    fileType: string,
+    repoName: string,
+    fileTree: string[],
+    manifestContent: string
+  ): Promise<string> {
+    const prompt = `
+      You are a world-class documentation engineer. 
+      Generate a deep, accurate, and professional ${fileType} for the repository "${repoName}".
+      
+      CODEBASE CONTEXT:
+      - Repository Structure: ${fileTree.join(', ')}
+      - Manifest Content (package.json/requirements.txt/etc): 
+      ${manifestContent}
+
+      INSTRUCTIONS:
+      1. Analyze the manifest to identify the exact technology stack, scripts, and dependencies.
+      2. Use the file tree to infer the architecture (e.g., MVC, Hexagonal, simple script).
+      3. Write the ${fileType} based on this SPECIFIC codebase, NOT as a general template.
+      4. If it's a README, include: Clear overview, Detailed Feature List (inferred from code), 
+         Installation (based on manifest), Usage, and Tech Stack.
+      5. Output ONLY the markdown content.
+    `;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-pro-preview',
+      contents: prompt,
+    });
+
+    return response.text || '';
+  }
 }
